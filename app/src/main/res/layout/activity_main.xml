@@ -4,30 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/salarypredictor"
     tools:context=".MainActivity">
 
+    <pl.droidsonroids.gif.GifImageView
+
+        android:id="@+id/scangif"
+        android:layout_width="0dp"
+        android:layout_height="308dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/scannergif"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="216dp"
-        android:layout_height="219dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="316dp"
+        android:layout_height="308dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@android:drawable/ic_menu_upload" />
 
     <Button
         android:id="@+id/upload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="100dp"
         android:text="Upload"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintEnd_toStartOf="@+id/test"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/test"
+        android:layout_width="121dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="#2196F3"
+        android:text="Test Images"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
@@ -45,8 +69,8 @@
 
     <TextView
         android:id="@+id/resultOutput"
-        android:layout_width="348dp"
-        android:layout_height="110dp"
+        android:layout_width="344dp"
+        android:layout_height="80dp"
         android:layout_marginStart="31dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="32dp"
@@ -62,7 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:text="Result"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,12 +98,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="151dp"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="151dp"
+        android:layout_marginBottom="15dp"
         android:text="Logout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/resultOutput" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

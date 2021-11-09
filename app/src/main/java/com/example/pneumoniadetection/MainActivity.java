@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pneumoniadetection.ml.PneumoniaModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -31,12 +33,12 @@ import java.nio.ByteBuffer;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button logout;
+    private Button logout, test;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     private Button predict,upload;
     private ImageView img;
-    private static final int PICK_IMAGE_REQUEST=1;
+    private static final int PICK_IMAGE_REQUEST=2;
     private Uri mImageUri;
     private Bitmap bitmap;
     private TextView tv;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         logout=findViewById(R.id.logout);
+        test = findViewById(R.id.test);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -68,6 +71,18 @@ public class MainActivity extends AppCompatActivity {
                 intent.setType("image/*");// by this it shows only images to file chooser
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(intent,PICK_IMAGE_REQUEST);
+            }
+        });
+
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intentTest = new Intent(getApplicationContext(), SecondActivity.class);
+                startActivityForResult(intentTest, 1);
+                //startActivity(intentTest);
+                //finish();
+
             }
         });
     predict.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +139,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                String result = data.getStringExtra("result");
+                switch(result){
+                    case "Normal1": img.setImageResource(R.drawable.normal1);
+                         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.normal1);
+                        break;
+                    case "Normal2": img.setImageResource(R.drawable.normal2);
+                        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.normal2);
+                        break;
+                    case "Normal3": img.setImageResource(R.drawable.normal3);
+                        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.normal3);
+                        break;
+                    case "Pneumonia1": img.setImageResource(R.drawable.pneumonia1);
+                        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pneumonia1);
+                        break;
+                    case "Pneumonia2": img.setImageResource(R.drawable.pneumonia2);
+                        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pneumonia2);
+                        break;
+                    case "Pneumonia3": img.setImageResource(R.drawable.pneumonia3);
+                        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pneumonia3);
+                        break;
+                }
+                // mTextViewResult.setText("" + result);
+                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
+            }
+            if (resultCode == RESULT_CANCELED) {
+                // mTextViewResult.setText("Nothing selected");
+            }
+        }
         if(requestCode==PICK_IMAGE_REQUEST && resultCode==RESULT_OK && data!=null && data.getData()!=null){
             mImageUri=data.getData();
             //     mImageView.setImageURI(mImageUri);
@@ -137,4 +182,5 @@ public class MainActivity extends AppCompatActivity {
             //
         }
     }
+
 }
