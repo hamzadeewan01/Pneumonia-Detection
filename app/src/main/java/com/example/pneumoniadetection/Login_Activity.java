@@ -38,15 +38,18 @@ public class Login_Activity extends AppCompatActivity {
     private EditText email,password;
     private Button login,createAccount;
     private boolean valid = true;
-    private TextView verifyEmail;
+    private TextView verifyEmail,forgot;
+    private String emailValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        emailValue="";
         mAuth = FirebaseAuth.getInstance();
         email = findViewById(R.id.emailAddress);
         verifyEmail=findViewById(R.id.verifyEmail);
+        forgot=findViewById(R.id.forgot);
         verifyEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,6 +66,35 @@ public class Login_Activity extends AppCompatActivity {
                         }
                     });
                 }catch(Exception e){
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    emailValue=email.getText().toString();
+                    if(emailValue!="") {
+                        mAuth.sendPasswordResetEmail(emailValue)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.i("TAG", "Email sent.");
+                                        }
+                                    }
+                                });
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Enter your email", Toast.LENGTH_SHORT).show();
+                    }
+//                    String link = FirebaseAuth.getInstance().generatePasswordResetLink(
+//                            email, actionCodeSettings);
+//                    // Construct email verification template, embed the link and send
+//                    // using custom SMTP server.
+//                    sendCustomEmail(email, displayName, link);
+                }catch(Exception e){
+                    email.setError("Enter valid email");
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
