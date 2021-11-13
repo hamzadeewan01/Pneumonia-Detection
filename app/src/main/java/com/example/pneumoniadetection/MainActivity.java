@@ -1,20 +1,29 @@
 package com.example.pneumoniadetection;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+//import android.widget.Toolbar;
 
 import com.example.pneumoniadetection.ml.PneumoniaModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -64,13 +73,89 @@ public class MainActivity extends AppCompatActivity {
         upload=findViewById(R.id.upload);
         img=findViewById(R.id.imageView);
         tv=findViewById(R.id.result);
+
+        ActivityResultLauncher<Intent> imgResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        int resultCode = result.getResultCode();
+                        Intent data = result.getData();
+
+                        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                            mImageUri = data.getData();
+
+                            try {
+                                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageUri);
+                                img.setImageBitmap(bitmap);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                    }
+
+                });
+
+        ActivityResultLauncher<Intent> secondActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        int resultCode = result.getResultCode();
+                        Intent data = result.getData();
+
+                        if (resultCode == RESULT_OK) {
+                            String resultStr = data.getStringExtra("result");
+                            switch (resultStr) {
+                                case "Normal1":
+                                    img.setImageResource(R.drawable.normal1);
+                                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.normal1);
+                                    break;
+                                case "Normal2":
+                                    img.setImageResource(R.drawable.normal2);
+                                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.normal2);
+                                    break;
+                                case "Normal3":
+                                    img.setImageResource(R.drawable.normal3);
+                                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.normal3);
+                                    break;
+                                case "Pneumonia1":
+                                    img.setImageResource(R.drawable.pneumonia1);
+                                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pneumonia1);
+                                    break;
+                                case "Pneumonia2":
+                                    img.setImageResource(R.drawable.pneumonia2);
+                                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pneumonia2);
+                                    break;
+                                case "Pneumonia3":
+                                    img.setImageResource(R.drawable.pneumonia3);
+                                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pneumonia3);
+                                    break;
+                            }
+                            // mTextViewResult.setText("" + result);
+                            Toast.makeText(getApplicationContext(), resultStr, Toast.LENGTH_SHORT).show();
+                        }
+
+                        if (resultCode == RESULT_CANCELED) {
+                            // mTextViewResult.setText("Nothing selected");
+                        }
+
+                    }
+
+                });
+
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setType("image/*");// by this it shows only images to file chooser
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent,PICK_IMAGE_REQUEST);
+//                startActivityForResult(intent,PICK_IMAGE_REQUEST);
+                imgResultLauncher.launch(intent);
             }
         });
 
@@ -79,43 +164,52 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intentTest = new Intent(getApplicationContext(), SecondActivity.class);
-                startActivityForResult(intentTest, 1);
-                //startActivity(intentTest);
-                //finish();
-
+//                startActivityForResult(intentTest, 1);
+                secondActivityResultLauncher.launch(intentTest);
             }
         });
     predict.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            bitmap=Bitmap.createScaledBitmap(bitmap,64,64,true);
-            try {
-                PneumoniaModel model = PneumoniaModel.newInstance(getApplicationContext());
+            if (img.getDrawable()!=null){
+                bitmap=Bitmap.createScaledBitmap(bitmap,64,64,true);
+                try {
+                    PneumoniaModel model = PneumoniaModel.newInstance(getApplicationContext());
 
-                // Creates inputs for reference.
-                TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 3}, DataType.FLOAT32);
-                TensorImage tensorImage = new TensorImage(DataType.FLOAT32);
-                tensorImage.load(bitmap);
-                ByteBuffer byteBuffer = tensorImage.getBuffer();
-                inputFeature0.loadBuffer(byteBuffer);
+                    // Creates inputs for reference.
+                    TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 3}, DataType.FLOAT32);
+                    TensorImage tensorImage = new TensorImage(DataType.FLOAT32);
+                    tensorImage.load(bitmap);
+                    ByteBuffer byteBuffer = tensorImage.getBuffer();
+                    inputFeature0.loadBuffer(byteBuffer);
 
-                // Runs model inference and gets result.
-                PneumoniaModel.Outputs outputs = model.process(inputFeature0);
-                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+                    // Runs model inference and gets result.
+                    PneumoniaModel.Outputs outputs = model.process(inputFeature0);
+                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
-                // Releases model resources if no longer used.
-                model.close();
-                if(outputFeature0.getFloatArray()[0]>0.5){
-                    tv.setText("Pneumonia");
-                }else{
-                    tv.setText("Normal");
+                    // Releases model resources if no longer used.
+                    model.close();
+                    if(outputFeature0.getFloatArray()[0]>0.5){
+                        tv.setText("Pneumonia");
+                    }else{
+                        tv.setText("Normal");
+                    }
+                } catch (IOException e) {
+                    // TODO Handle the exception'
+                    e.printStackTrace();
+                    displayExceptionMessage(e.getMessage());
+
                 }
-            } catch (IOException e) {
-                // TODO Handle the exception
 
             }
+            else Toast.makeText(getApplicationContext(), "No Image Selected", Toast.LENGTH_SHORT).show();
         }
     });
+    }
+
+    public void displayExceptionMessage(String msg)
+    {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     private void signOut() {
@@ -134,52 +228,6 @@ public class MainActivity extends AppCompatActivity {
                     });
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                String result = data.getStringExtra("result");
-                switch(result){
-                    case "Normal1": img.setImageResource(R.drawable.normal1);
-                         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.normal1);
-                        break;
-                    case "Normal2": img.setImageResource(R.drawable.normal2);
-                        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.normal2);
-                        break;
-                    case "Normal3": img.setImageResource(R.drawable.normal3);
-                        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.normal3);
-                        break;
-                    case "Pneumonia1": img.setImageResource(R.drawable.pneumonia1);
-                        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pneumonia1);
-                        break;
-                    case "Pneumonia2": img.setImageResource(R.drawable.pneumonia2);
-                        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pneumonia2);
-                        break;
-                    case "Pneumonia3": img.setImageResource(R.drawable.pneumonia3);
-                        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pneumonia3);
-                        break;
-                }
-                // mTextViewResult.setText("" + result);
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-            }
-            if (resultCode == RESULT_CANCELED) {
-                // mTextViewResult.setText("Nothing selected");
-            }
-        }
-        if(requestCode==PICK_IMAGE_REQUEST && resultCode==RESULT_OK && data!=null && data.getData()!=null){
-            mImageUri=data.getData();
-            //     mImageView.setImageURI(mImageUri);
-            //
-            try{
-                bitmap= MediaStore.Images.Media.getBitmap(getContentResolver(),mImageUri);
-                img.setImageBitmap(bitmap);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-            //
         }
     }
 
