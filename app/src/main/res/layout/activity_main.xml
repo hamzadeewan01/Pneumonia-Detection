@@ -7,12 +7,22 @@
     android:background="@drawable/salarypredictor"
     tools:context=".MainActivity">
 
+<!--    <android.widget.Toolbar-->
+<!--        android:id="@+id/toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:background="?attr/colorPrimary"-->
+<!--        android:elevation="4dp"-->
+<!--        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
+<!--        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">-->
+
+<!--    </android.widget.Toolbar>-->
+
     <pl.droidsonroids.gif.GifImageView
 
         android:id="@+id/scangif"
         android:layout_width="0dp"
         android:layout_height="308dp"
-        android:layout_marginTop="20dp"
         android:src="@drawable/scannergif"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,35 +34,11 @@
         android:id="@+id/imageView"
         android:layout_width="316dp"
         android:layout_height="308dp"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scangif"
         tools:srcCompat="@android:drawable/ic_menu_upload" />
-
-    <Button
-        android:id="@+id/upload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="100dp"
-        android:text="Upload"
-        app:layout_constraintEnd_toStartOf="@+id/test"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <Button
-        android:id="@+id/test"
-        android:layout_width="121dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="30dp"
-        android:backgroundTint="#2196F3"
-        android:text="Test Images"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
         android:id="@+id/scan"
@@ -61,31 +47,20 @@
         android:layout_marginStart="157dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="157dp"
+        android:backgroundTint="#2196F3"
         android:text="Scan Now"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/upload" />
-
-    <TextView
-        android:id="@+id/resultOutput"
-        android:layout_width="344dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="32dp"
-        android:text="TextView"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/result" />
+        app:layout_constraintTop_toBottomOf="@+id/test" />
 
     <TextView
         android:id="@+id/result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="103dp"
+        android:layout_height="30dp"
         android:layout_marginTop="18dp"
         android:text="Result"
+        android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -94,16 +69,139 @@
         app:layout_constraintTop_toBottomOf="@+id/scan" />
 
     <Button
+        android:id="@+id/upload"
+        android:layout_width="100dp"
+        android:layout_height="58dp"
+        android:backgroundTint="@color/white"
+        android:text="Upload"
+        android:textColor="#2196F3"
+        app:layout_constraintBottom_toBottomOf="@+id/test"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.309"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/test"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/test"
+        android:layout_width="121dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="#2196F3"
+        android:text="Test Images"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.694"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <Button
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="151dp"
-        android:layout_marginEnd="151dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginStart="158dp"
+        android:layout_marginEnd="159dp"
+        android:layout_marginBottom="60dp"
         android:text="Logout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!--    <Button-->
+<!--        android:id="@+id/logout"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="156dp"-->
+<!--        android:layout_marginEnd="161dp"-->
+<!--        android:layout_marginBottom="60dp"-->
+<!--        android:text="Logout"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+
+    <!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="316dp"-->
+<!--        android:layout_height="308dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        tools:srcCompat="@android:drawable/ic_menu_upload" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/upload"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="30dp"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:layout_marginEnd="100dp"-->
+<!--        android:text="Upload"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/test"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/imageView" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/test"-->
+<!--        android:layout_width="121dp"-->
+<!--        android:layout_height="58dp"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:layout_marginEnd="30dp"-->
+<!--        android:text="Test Images"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/imageView" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/scan"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="157dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_marginEnd="157dp"-->
+<!--        android:text="Scan Now"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.571"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/upload" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/resultOutput"-->
+<!--        android:layout_width="344dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_marginStart="31dp"-->
+<!--        android:layout_marginTop="25dp"-->
+<!--        android:layout_marginEnd="32dp"-->
+<!--        android:text="TextView"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/result" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/result"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="18dp"-->
+<!--        android:text="Result"-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:textSize="18sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/scan" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/logout"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="151dp"-->
+<!--        android:layout_marginEnd="151dp"-->
+<!--        android:layout_marginBottom="15dp"-->
+<!--        android:text="Logout"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.466"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

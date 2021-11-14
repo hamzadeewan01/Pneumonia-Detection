@@ -5,9 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CreateAccount">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/salarypredictor"
         android:orientation="vertical"
         android:padding="20dp"
         tools:layout_editor_absoluteX="113dp"
@@ -19,7 +21,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Full Name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textColor="@color/white" />
 
         <EditText
             android:id="@+id/createEmailId"
@@ -27,7 +30,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textColor="@color/white" />
 
         <EditText
             android:id="@+id/createPassword"
@@ -35,13 +39,15 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/buttonCreateAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cornerRadius="30dp"
-            android:text="Create Account" />
+            android:backgroundTint="#2196F3"
+            android:text="Create Account"
+            app:cornerRadius="30dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
