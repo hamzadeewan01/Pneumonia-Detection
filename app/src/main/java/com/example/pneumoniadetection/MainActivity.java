@@ -239,6 +239,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.logout:signOut();
                              return true;
+            case R.id.about_pneumonia:startActivity(new Intent(getApplicationContext(),AboutPneumonia.class));
+                                      return true;
             default:         return false;
         }
     }
