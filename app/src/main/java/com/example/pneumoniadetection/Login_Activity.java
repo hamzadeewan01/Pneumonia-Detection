@@ -82,6 +82,7 @@ public class Login_Activity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Log.i("TAG", "Email sent.");
+                                            Toast.makeText(getApplicationContext(), "Email sent for reset password", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
