@@ -53,7 +53,7 @@ public class CreateAccount extends AppCompatActivity {
                                    Toast.makeText(getApplicationContext(), "Verification email not sent", Toast.LENGTH_SHORT).show();
                                }
                            });
-                           startActivity(new Intent(getApplicationContext(),Login_Activity.class));
+                           //startActivity(new Intent(getApplicationContext(),Login_Activity.class));
                            finish();
                        }
                    }).addOnFailureListener(new OnFailureListener() {

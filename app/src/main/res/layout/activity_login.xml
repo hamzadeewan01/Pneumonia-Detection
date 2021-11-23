@@ -102,12 +102,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
     </com.google.android.gms.common.SignInButton>
 
@@ -116,14 +118,14 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="174dp"
+        android:layout_marginTop="121dp"
         android:layout_marginEnd="174dp"
-        android:layout_marginBottom="90dp"
         android:text="------------- OR -------------"
         android:textColor="@color/white"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

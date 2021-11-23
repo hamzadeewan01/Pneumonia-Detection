@@ -41,6 +41,8 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button  test;
@@ -52,12 +54,14 @@ public class MainActivity extends AppCompatActivity {
     private Uri mImageUri;
     private Bitmap bitmap;
     private TextView tv;
+    private GifImageView scanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         test = findViewById(R.id.test);
+        scanner=findViewById(R.id.scangif);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -84,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageUri);
                                 img.setImageBitmap(bitmap);
+                                scanner.setVisibility(View.INVISIBLE);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -112,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                                     break;
                                 case "Normal2":
                                     img.setImageResource(R.drawable.normal2);
-                                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.normal2);
+                                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.normal2); //need change
                                     break;
                                 case "Normal3":
                                     img.setImageResource(R.drawable.normal3);
@@ -132,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                                     break;
                             }
                             // mTextViewResult.setText("" + result);
+                            scanner.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), resultStr, Toast.LENGTH_SHORT).show();
                         }
 

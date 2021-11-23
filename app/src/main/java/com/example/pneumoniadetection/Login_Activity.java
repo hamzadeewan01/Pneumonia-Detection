@@ -109,6 +109,7 @@ public class Login_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),CreateAccount.class));
                 //finish();
+
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
@@ -149,8 +150,12 @@ public class Login_Activity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-            finish();
+            if(mAuth.getCurrentUser().isEmailVerified()){
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                finish();
+            }else {
+                verifyEmail.setVisibility(View.VISIBLE);
+            }
         }
     }
     private void signIn() {
