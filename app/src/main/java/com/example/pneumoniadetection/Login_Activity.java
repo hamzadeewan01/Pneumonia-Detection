@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,12 +88,8 @@ public class Login_Activity extends AppCompatActivity {
                     }else{
                         Toast.makeText(getApplicationContext(), "Enter your email", Toast.LENGTH_SHORT).show();
                     }
-//                    String link = FirebaseAuth.getInstance().generatePasswordResetLink(
-//                            email, actionCodeSettings);
-//                    // Construct email verification template, embed the link and send
-//                    // using custom SMTP server.
-//                    sendCustomEmail(email, displayName, link);
-                }catch(Exception e){
+                }
+                catch(Exception e){
                     email.setError("Enter valid email");
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -108,8 +103,6 @@ public class Login_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),CreateAccount.class));
-                //finish();
-
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
@@ -189,27 +182,17 @@ public class Login_Activity extends AppCompatActivity {
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        //  findViewById(R.id.sign_in_btn).setVisibility(View.INVISIBLE);
-      //  loading.setVisibility(View.VISIBLE);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-//                            fullName=user.getDisplayName();
-//                            uid=user.getUid();
-//                            email=user.getEmail();
                             startActivity(new Intent(getApplicationContext(),MainActivity.class));
-//                            checkUserAccessLevel();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
-                            // Snackbar.make(mBinding.mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            //updateUI(null);
                         }
-
-                        // ...
                     }
                 });
     }

@@ -5,11 +5,8 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,7 +21,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-//import android.widget.Toolbar;
 
 import com.example.pneumoniadetection.ml.PneumoniaModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -50,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button predict,upload;
     private ImageView img;
-    private static final int PICK_IMAGE_REQUEST=2;
     private Uri mImageUri;
     private Bitmap bitmap;
     private TextView tv;
@@ -92,11 +87,8 @@ public class MainActivity extends AppCompatActivity {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
                         }
-
                     }
-
                 });
 
         ActivityResultLauncher<Intent> secondActivityResultLauncher = registerForActivityResult(
@@ -117,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                                     break;
                                 case "Normal2":
                                     img.setImageResource(R.drawable.normal2);
-                                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.normal2); //need change
+                                    bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.normal2);
                                     break;
                                 case "Normal3":
                                     img.setImageResource(R.drawable.normal3);
@@ -136,26 +128,22 @@ public class MainActivity extends AppCompatActivity {
                                     bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pneumonia3);
                                     break;
                             }
-                            // mTextViewResult.setText("" + result);
                             scanner.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), resultStr, Toast.LENGTH_SHORT).show();
                         }
 
                         if (resultCode == RESULT_CANCELED) {
-                            // mTextViewResult.setText("Nothing selected");
+                            // Nothing Selcted
                         }
-
                     }
-
                 });
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setType("image/*");// by this it shows only images to file chooser
+                intent.setType("image/*"); // by this it shows only images to file chooser
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-//                startActivityForResult(intent,PICK_IMAGE_REQUEST);
                 imgResultLauncher.launch(intent);
             }
         });
@@ -165,47 +153,46 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intentTest = new Intent(getApplicationContext(), SecondActivity.class);
-//                startActivityForResult(intentTest, 1);
                 secondActivityResultLauncher.launch(intentTest);
             }
         });
-    predict.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (img.getDrawable()!=null){
-                bitmap=Bitmap.createScaledBitmap(bitmap,64,64,true);
-                try {
-                    PneumoniaModel model = PneumoniaModel.newInstance(getApplicationContext());
 
-                    // Creates inputs for reference.
-                    TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 3}, DataType.FLOAT32);
-                    TensorImage tensorImage = new TensorImage(DataType.FLOAT32);
-                    tensorImage.load(bitmap);
-                    ByteBuffer byteBuffer = tensorImage.getBuffer();
-                    inputFeature0.loadBuffer(byteBuffer);
+        predict.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (img.getDrawable()!=null){
+                    bitmap=Bitmap.createScaledBitmap(bitmap,64,64,true);
+                    try {
+                        PneumoniaModel model = PneumoniaModel.newInstance(getApplicationContext());
 
-                    // Runs model inference and gets result.
-                    PneumoniaModel.Outputs outputs = model.process(inputFeature0);
-                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+                        // Creates inputs for reference.
+                        TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 3}, DataType.FLOAT32);
+                        TensorImage tensorImage = new TensorImage(DataType.FLOAT32);
+                        tensorImage.load(bitmap);
+                        ByteBuffer byteBuffer = tensorImage.getBuffer();
+                        inputFeature0.loadBuffer(byteBuffer);
 
-                    // Releases model resources if no longer used.
-                    model.close();
-                    if(outputFeature0.getFloatArray()[0]>0.5){
-                        tv.setText("Pneumonia");
-                    }else{
-                        tv.setText("Normal");
+                        // Runs model inference and gets result.
+                        PneumoniaModel.Outputs outputs = model.process(inputFeature0);
+                        TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+
+                        // Releases model resources if no longer used.
+                        model.close();
+                        if(outputFeature0.getFloatArray()[0]>0.5){
+                            tv.setText("Pneumonia");
+                        }else{
+                            tv.setText("Normal");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        displayExceptionMessage(e.getMessage());
+
                     }
-                } catch (IOException e) {
-                    // TODO Handle the exception'
-                    e.printStackTrace();
-                    displayExceptionMessage(e.getMessage());
 
                 }
-
+                else Toast.makeText(getApplicationContext(), "No Image Selected", Toast.LENGTH_SHORT).show();
             }
-            else Toast.makeText(getApplicationContext(), "No Image Selected", Toast.LENGTH_SHORT).show();
-        }
-    });
+        });
     }
 
     public void displayExceptionMessage(String msg)
