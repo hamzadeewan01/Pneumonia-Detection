@@ -14,6 +14,5 @@ can logout themselves too.
 ### How to use?
 We have uploaded the apk file in the main branch from where users can install this app on android only.
 
-### Contributors
-https://github.com/ProPrakharSoni<br>
-https://github.com/naumankazi
+### Documentation
+https://docs.google.com/document/d/1pzPf2336oK9aomOVDLKERLAcEpegWX0tZocseAoGqUc/edit?usp=sharing
